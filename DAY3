@@ -1,0 +1,97 @@
+Fibonacci Number
+class Solution {
+public:
+    int fib(int n) {
+        int sum=0;
+      if(n==0 || n==1)
+      {
+          return n;
+      }
+     
+       sum = fib(n-1)+fib(n-2);
+       return sum;
+     }
+};
+
+Intersection of Two Arrays II
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        int i=0,j=0;
+        vector<int> ans;
+        sort(nums1.begin(),nums1.end());
+        sort(nums2.begin(),nums2.end());
+        while(i<nums1.size() && j<nums2.size())
+        {
+        if(nums1[i]==nums2[j])
+        {
+            ans.push_back(nums1[i]);
+            i++;
+            j++;
+        }
+        else if(nums1[i]<nums2[j])
+        {
+         i++;  
+         }
+        else{
+            j++;
+          }
+        }
+       // for(int i=0;i<ans.size();i++)
+        return ans;
+    }
+};
+
+Best Time to Buy and Sell Stock
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+       int mn = INT_MAX;
+        int maxprofit = 0;
+        int profit = 0;
+        for(int i = 0; i < prices.size(); i++){
+            if(prices[i] < mn){
+                mn = prices[i];
+            }
+            profit = prices[i] - mn;
+            if(maxprofit < profit){
+                maxprofit = profit;
+            }
+        }
+        return maxprofit;    
+    }
+};
+
+Find Duplicate in Array
+#include <bits/stdc++.h> 
+int findDuplicate(vector<int> &arr, int n){
+	// Write your code here.
+    int ans=0;
+    sort(arr.begin(),arr.end());
+    for(int i=0;i<n;i++)
+    {
+        if(arr[i]==arr[i+1])
+         ans=arr[i];   
+    }
+    return ans;
+}
+
+Brain Game
+class Solution{
+	public:
+    bool brainGame(vector<int>nums) {
+        // Code here.
+        vector<int>a(1005);
+    	for(int i = 2; i<= 1000; i++){
+    		for(int j = 2*i; j <= 1000; j+=i)
+    			a[j] = max(a[j], 1 + a[i]);
+    	}
+    	int x = 0;
+    	for(int i = 0; i < nums.size(); i++){
+    		x = x ^ a[nums[i]];
+    	}
+    	if(x == 0)
+    		return false;
+    	return true;
+    }
+};
