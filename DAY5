@@ -1,0 +1,130 @@
+Valid Sudoku
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        int height=board.size();
+     int width=board[0].size();
+     vector<vector<int>> checkRow(height, vector<int> (width+1));
+     vector<vector<int>> checkCol(height, vector<int> (width+1));
+     vector<vector<int>> checkBox(height, vector<int> (width+1));  
+
+     for(int row=0;row<height;row++){
+       for(int col=0;col<width;col++){
+           
+         if(board[row][col]=='.')
+           continue;         
+         int num=board[row][col]-'0'; 
+         int box=(row/3)*3+(col/3);                
+         if(checkRow[row][num] || checkCol[col][num] || checkBox[box][num])      
+           return false;
+         checkRow[row][num]=checkCol[col][num]=checkBox[box][num]=1;      
+       }
+     }
+     return true; 
+    }
+};
+
+Search a 2D Matrix
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int rows = matrix.size(),
+			cols = matrix[0].size(),
+            row = 0, col = cols - 1;
+			
+        while (row < rows && col > -1) {
+            int cur = matrix[row][col];
+            if (cur == target) return true;
+            if (target > cur) row++;
+            else col--;
+        }
+        
+        return false;
+    }
+};
+
+Interleaving String
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        vector<vector<int>>dp(s1.size()+1,(vector<int>(s2.size()+1,0)));
+        if(s3.size()!=s1.size()+s2.size()){
+            return false;
+        }
+        for(int i=s1.size();i>=0;i--){
+            for(int j=s2.size();j>=0;j--){
+                int k=i+j;
+                if(i==s1.size()&&j==s2.size()){
+                    dp[i][j]=1;
+                }
+                else if(s3[k]==s2[j]&&s3[k]==s1[i]){
+                    dp[i][j]= dp[i+1][j]||dp[i][j+1];
+                }
+                else if(s1[i]==s3[k]){
+                    dp[i][j]= dp[i+1][j];
+                }
+                else if(s3[k]==s2[j]){
+                    dp[i][j]= dp[i][j+1];
+                }
+                else{
+                    dp[i][j]= false;
+                }  
+            }
+        }
+        return dp[0][0]; 
+    }
+};
+
+Brackets in Matrix Chain Multiplication
+class Solution{
+public:
+    string matrixChainOrder(int arr[], int n){
+        // code here
+         map<pair<int,int>, string> mp;
+       int dp[n-1][n-1];
+   
+   for(int i=0, j=0; j<n-1; ++j)
+   {
+     int r=i,c=j, len=n-1-j;
+      while(len--)
+      {
+          if(j==0)
+          {
+            dp[r][c] =0;
+           
+            string str = "";
+            char ch = 'A'+ (n-1-len-1);
+            str = str + ch;
+            mp[make_pair(r,c)] = str;
+             r++; c++;
+   
+          }
+          else if(j==1)
+          {
+         dp[r][c] = arr[r]*arr[c]*arr[c+1];
+         mp[make_pair(r,c)] = '('+ mp[make_pair(r,c-1)] + mp[make_pair(r+1,c)]+ ')';
+            r++, c++;
+          }
+          else
+          {
+            int right, down;
+            dp[r][c] = INT_MAX;
+            for(right=r, down=r+1; right<=c && down<=c; right++, down++)
+            {
+         
+              int operations = dp[r][right] + dp[down][c] + arr[r]*arr[down]*arr[c+1];
+   
+             if(dp[r][c] > operations)
+             {
+               dp[r][c] = operations;
+               mp[make_pair(r,c)] = '('+ mp[make_pair(r,right)]+mp[make_pair(down,c)]+')';
+             }
+            }
+            
+            r++, c++;
+          }
+      }
+   }
+   return mp[make_pair(0,n-2)];
+    }
+};
