@@ -1,0 +1,115 @@
+Binary Tree Right Side View
+class Solution {
+public:
+     vector<int> ans;
+    vector<int> rightSideView(TreeNode* root) {
+         if(root==NULL)return ans;
+        
+		queue<TreeNode*>q;
+        q.push(root);
+        
+		// Level order transversal
+		while(!q.empty()){
+            int s=q.size();
+            int dat=0;
+			
+            while(s){
+                TreeNode*temp=q.front();
+                q.pop();
+                dat=temp->val;
+                if(temp->left!=NULL)q.push(temp->left);
+                if(temp->right!=NULL)q.push(temp->right);
+                s--;
+            }
+			
+			// Simply push ush the last value
+            ans.push_back(dat);
+        }
+        return ans;
+    }
+};
+
+First Unique Character in a String
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        map<char,int> mp;
+        for(int i=0;i<s.length();i++)
+        {
+            mp[s[i]]++;
+        }
+        for(int i=0;i<s.length();i++)
+        {
+            if(mp[s[i]]==1)
+                return i;
+        }
+        return -1;
+    }
+};
+
+Ransom Note
+class Solution {
+public:
+    bool canConstruct(string x, string y) {
+        unordered_map<char,int> mp;
+        for(int i=0;i<y.length();i++)
+        {
+            mp[y[i]]++;
+        }
+        for(int i=0;i<x.length();i++)
+        {
+            if(mp.find(x[i])==mp.end())
+            {
+                return false;
+            }
+            else{
+                mp[x[i]]--;
+            }
+        }
+        for(int i=0;i<mp.size();i++)
+        {
+            if(mp[i]<0)
+            {
+                return false;
+            }
+        }
+       return true;
+    }
+};
+
+Valid Anagram
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        
+        sort(s.begin(),s.end());
+        sort(t.begin(),t.end());
+        
+        if(s==t)
+            return true;
+        else
+            return false;
+    }
+};
+
+Shortest Uncommon Subsequence 
+class Solution {
+  public:
+    int shortestUnSub(string S, string T) {
+        // code here
+         int n = S.size(), m = T.size();
+    vector <vector<int>> dp(n+1, vector<int>(m+1, 1000));
+    for(int i=1; i<=n; i++){
+        for(int j=1; j<=m; j++){
+            int k = j;
+            while(k && S[i-1] != T[k-1])
+                k -= 1;
+            if(k == 0)
+                dp[i][j] = 1;
+            else
+                dp[i][j] = min(dp[i-1][j], 1+dp[i-1][k-1]);
+        }
+    }
+    return dp[n][m] == 1000 ? -1 : dp[n][m];
+    }
+};
