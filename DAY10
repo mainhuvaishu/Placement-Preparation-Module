@@ -1,1 +1,24 @@
-
+Pascal's Triangle
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+      vector<vector<int>> res;
+        int x=1;
+        for(int i=0;i<numRows;i++)
+        {
+            vector<int> v{};
+            for(int j=0;j<=i;j++)
+            {
+                if(j==0 || j==i){
+                    x=1;
+                }
+                else{
+                    x=x*(i-j+1)/j;
+                }
+                v.push_back(x);
+            }
+            res.push_back(v);
+        }
+        return res;
+    }
+};
